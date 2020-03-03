@@ -22,27 +22,6 @@ app.use("/api/projects", require("./routes/projects"));
 app.use("/api/info", require("./routes/info"));
 app.use("/api/upload", require("./routes/upload"));
 
-app.post("/upload", (req, res) => {
-  if (req.files === null) {
-    return res.status(400).json({ msg: "No file uploaded" });
-  }
-
-  console.log(req.files);
-
-  const file = req.files.file;
-
-  file.mv(`${__dirname}/img/${file.name}`, err => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-
-    console.log(file);
-
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
-  });
-});
-
 app.listen(SERVER_PORT, () => {
   console.log(`app listened on ${SERVER_PORT}`);
 });
