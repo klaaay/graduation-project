@@ -1,0 +1,35 @@
+.my-breadcrumb {
+  padding: 12px 0 !important;
+  padding-left: 20px !important;
+  background: #001529 !important;
+}
+
+.my-breadcrumb .back-icon .anticon-home {
+  color: white !important;
+}
+
+.my-breadcrumb .my-breadcrumb-item {
+  color: white !important;
+}
+
+.my-breadcrumb .ant-breadcrumb-separator {
+  color: white !important;
+}
+
+.backBtn {
+  position: fixed !important;
+  right: 0 !important;
+  z-index: 99 !important;
+  height: 44px !important;
+  border: none !important;
+  background-color: #0B2B49 !important;
+  border-radius: 0 !important;
+  padding: 0 25px !important;
+  color: white !important;
+}
+
+@media (max-width: 500px) {
+  .backBtn {
+    display: none !important;
+  }
+}

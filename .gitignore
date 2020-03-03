@@ -1,0 +1,9 @@
+.vscode
+client/node_modules
+client/debug.log
+client/debug.log
+server/node_modules
+server/data
+server/img
+server/test
+server/config/default.json

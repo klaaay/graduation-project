@@ -1,0 +1,64 @@
+html {
+  font-size: 16px;
+}
+
+main {
+  background-color: #eaeff6 !important;
+}
+
+#root {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root .App {
+  height: 100%;
+}
+
+#root .App .ant-layout {
+  height: 100%;
+}
+
+.image-gallery-content .image-gallery-slide .image-gallery-image {
+  max-height: calc(100vh - 220px) !important;
+}
+
+.ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background-color: #189183 !important;
+}
+
+.ant-layout-content {
+  background: white;
+}
+
+.ant-menu-dark.ant-menu-horizontal {
+  border-bottom: 0;
+  line-height: 64px;
+}
+
+.ant-layout-header {
+  background: #001529;
+  padding: 0 50px;
+  height: 64px;
+  line-height: 64px;
+  padding-right: 0 !important;
+}
+
+.ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+  border-color: transparent !important;
+}
+
+.main-content {
+  padding: 30px;
+  background-color: #fff;
+  height: calc(100% - 140px);
+}
+
+.ant-upload {
+  width: 100%;
+}
+
+.ant-upload button {
+  width: 100%;
+}

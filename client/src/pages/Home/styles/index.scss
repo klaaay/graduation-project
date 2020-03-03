@@ -1,0 +1,40 @@
+#home {
+  height: 100%;
+}
+
+.home-pagination {
+  position: relative !important;
+  right: 0px !important;
+  top: 15px !important;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .project-item {
+    flex-basis: 25%;
+    padding: 20px;
+  }
+
+  @media (max-width: 1163px) {
+    .project-item {
+      flex-basis: 33%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .project-item {
+      flex-basis: 50%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .project-item {
+      flex-basis: 100%;
+    }
+  }
+}

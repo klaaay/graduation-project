@@ -1,0 +1,7 @@
+{
+  "mongoUrl": "mongodb://127.0.0.1:27017/media",
+  "DOMAIN": "http://localhost",
+  "INIT_URL": "data",
+  "SERVER_PORT": 3030,
+  "jwtSecret": "secret"
+}

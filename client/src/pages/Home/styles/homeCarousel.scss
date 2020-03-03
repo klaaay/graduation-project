@@ -1,0 +1,27 @@
+.homeCarousel {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #253646;
+
+  a {
+    display: flex;
+    justify-content: center;
+  }
+
+  .homeCarousel-img {
+    width: 60%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 500px) {
+    .homeCarousel-img {
+      width: 100%;
+    }
+  }
+}
+
+.homeCarousel-img {
+  height: 260px;
+  width: 100%;
+}

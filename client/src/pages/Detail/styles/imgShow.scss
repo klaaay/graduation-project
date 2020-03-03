@@ -1,0 +1,26 @@
+.ant-carousel .slick-slide {
+    text-align: center;
+    background: #364d79;
+    overflow: hidden;
+}
+
+.imgGallery {
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.image-gallery-image {
+    display: flex;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+
+    img {
+        width: auto !important;
+    }
+
+    @media (max-width: 500px) {
+        img {
+            width: 100% !important;
+        }
+    }
+}

@@ -1,0 +1,22 @@
+.head-search {
+  width: 200px !important;
+  float: right !important;
+  margin: 16px !important;
+}
+
+.head-search input {
+  border-radius: 3px !important;
+}
+
+.head-search i {
+  color: #ccc !important;
+}
+
+@media (max-width: 968px) {
+  .head-search {
+    display: none !important;
+  }
+  .ant-menu-vertical .head-search {
+    display: inline-block !important;
+  }
+}

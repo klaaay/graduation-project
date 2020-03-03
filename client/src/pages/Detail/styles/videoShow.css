@@ -1,0 +1,7 @@
+.myVideo {
+  width: 100%;
+}
+
+.myVideo video {
+  width: auto !important;
+}

@@ -1,0 +1,25 @@
+#admin-login {
+  height: 100%;
+}
+
+#admin-login .admin-login__main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#admin-login .admin-login__main .form-content {
+  background: white;
+  padding: 24px;
+  min-height: 320px;
+  width: 600px;
+  border: 1px solid #cccc;
+  border-radius: 15px;
+  padding-top: 50px;
+}

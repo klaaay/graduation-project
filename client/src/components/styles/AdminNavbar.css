@@ -1,0 +1,30 @@
+.admin-navbar {
+  position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  z-index: 1;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 20px !important;
+}
+
+.admin-navbar .logo {
+  color: white;
+  margin-right: 15px;
+  font-size: 1.5rem;
+}
+
+.admin-navbar .blank {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.admin-navbar .login-info-btn {
+  padding-right: 20px;
+  font-size: 1.5rem;
+  color: white;
+}
