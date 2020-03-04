@@ -1,4 +1,6 @@
 import React from 'react';
+import Axios, { AxiosRequestConfig } from 'axios';
+import Cookies from 'js-cookie';
 
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
@@ -10,6 +12,8 @@ import AdminHome from '@/pages/AdminHome';
 import { AuthProvider, useAuth } from '@/context/authContext';
 
 function App() {
+  // Axios.defaults.headers.common['x-auth-token'] = Cookies.get('token');
+
   return (
     <BrowserRouter>
       <AuthProvider>

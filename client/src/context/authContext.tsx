@@ -1,6 +1,8 @@
 import React, { createContext, useReducer, useMemo, useContext } from 'react';
 
 import { authLogin, tokenLogin } from '@/service';
+import Cookies from 'js-cookie';
+import Axios from 'axios';
 
 type IAuthState = {
   hasLogin: boolean;
@@ -10,7 +12,7 @@ type IAuthState = {
 };
 
 const initialState: IAuthState = {
-  hasLogin: true,
+  hasLogin: false,
   isLogin: false,
   name: '',
   errorMsg: ''
@@ -84,7 +86,8 @@ function useAuth(): IUseAuthResult {
       console.log('msg', msg);
       if (!isError) {
         const { name, token } = data;
-        localStorage.setItem('token', token);
+        Cookies.set('token', token);
+        Axios.defaults.headers.common['x-auth-token'] = token;
 
         dispatch({
           type: 'LOGIN_SUCCESS',
@@ -103,7 +106,8 @@ function useAuth(): IUseAuthResult {
     } catch (error) {}
   };
   const logout = async () => {
-    await localStorage.removeItem('token');
+    await Cookies.remove('token');
+    Axios.defaults.headers.common = {};
     dispatch({ type: 'LOGOUT' });
   };
 

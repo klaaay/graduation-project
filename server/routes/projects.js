@@ -71,10 +71,10 @@ router.post(
         name
       );
 
-      console.log(newProjectPath);
-      if (!fs.existsSync(newProjectPath)) {
-        fs.mkdirSync(newProjectPath);
-      }
+      // console.log(newProjectPath);
+      // if (!fs.existsSync(newProjectPath)) {
+      //   fs.mkdirSync(newProjectPath);
+      // }
 
       const project = await newProject.save();
 

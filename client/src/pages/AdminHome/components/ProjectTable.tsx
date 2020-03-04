@@ -47,14 +47,13 @@ const ProjectTable = props => {
     }
   ];
 
-  console.log(data);
-
   return (
     <Table
+      loading={loading}
       rowKey={'name'}
       columns={columns}
-      // dataSource={(data && data.data) || []}
-      dataSource={fakeData}
+      dataSource={(data && data.data) || []}
+      // dataSource={fakeData}
     />
   );
 };

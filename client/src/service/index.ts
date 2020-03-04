@@ -23,5 +23,15 @@ export const getProjects = () => {
   return wrappedAxios({
     method: 'get',
     url: `/api/projects`
+    // headers: {
+    //   'x-auth-token': Cookies.get('token')
+    // }
+  });
+};
+
+export const getTypes = () => {
+  return wrappedAxios({
+    method: 'get',
+    url: `/api/info/nav`
   });
 };

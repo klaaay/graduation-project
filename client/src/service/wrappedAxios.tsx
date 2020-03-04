@@ -1,5 +1,4 @@
 import Axios, { AxiosRequestConfig } from 'axios';
-import getToken from './getToken';
 import { message } from 'antd';
 const IP = 'http://localhost:3030';
 
@@ -12,8 +11,6 @@ export type IWrappedAxiosResult<T> = {
 export type ISelfDefinedConfig = {
   skipInfo?: boolean;
 };
-
-Axios.defaults.headers.common['x-auth-token'] = getToken();
 
 export default (
   configParams: AxiosRequestConfig & ISelfDefinedConfig
@@ -37,7 +34,6 @@ export default (
         };
       } else {
         !configParams.skipInfo && message.error(error.response.data.msg);
-        console.log(error.response.data);
         return {
           isError: true,
           data: null,
