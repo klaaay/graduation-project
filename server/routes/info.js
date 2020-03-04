@@ -104,7 +104,7 @@ classifys.sort().forEach(async (classify, index_classify) => {
 
 router.get("/nav", (req, res, next) => {
   res.json({
-    navbarInfo
+    data: navbarInfo
   });
 });
 

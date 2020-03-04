@@ -39,11 +39,11 @@ router.post(
         .not()
         .isEmpty(),
       check("type", "请选择项目所属的类别").isIn([
-        "life",
-        "program",
-        "music",
-        "biology",
-        "literature"
+        "0文学",
+        "1社会",
+        "2编程",
+        "3生物",
+        "4其他"
       ])
     ]
   ],
@@ -71,17 +71,57 @@ router.post(
         name
       );
 
-      // console.log(newProjectPath);
-      // if (!fs.existsSync(newProjectPath)) {
-      //   fs.mkdirSync(newProjectPath);
-      // }
+      const newProjectPathImg = path.resolve(
+        __dirname,
+        "../",
+        "./data",
+        type,
+        name,
+        "img"
+      );
+      const newProjectPathPdf = path.resolve(
+        __dirname,
+        "../",
+        "./data",
+        type,
+        name,
+        "pdf"
+      );
+      const newProjectPathVideo = path.resolve(
+        __dirname,
+        "../",
+        "./data",
+        type,
+        name,
+        "video"
+      );
+
+      console.log(newProjectPath);
+      if (!fs.existsSync(newProjectPath)) {
+        fs.mkdirSync(newProjectPath);
+        fs.mkdirSync(newProjectPathImg);
+        fs.mkdirSync(newProjectPathPdf);
+        fs.mkdirSync(newProjectPathVideo);
+        fs.writeFile(
+          `${newProjectPath}/description.txt`,
+          description,
+          "utf8",
+          function(error) {
+            if (error) {
+              console.log(error);
+              return false;
+            }
+            console.log("写入成功");
+          }
+        );
+      }
 
       const project = await newProject.save();
 
-      res.json(project);
+      res.json({ data: project, msg: "创建项目成功" });
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("服务器错误");
+      res.status(500).send({ msg: "服务器错误" });
     }
   }
 );

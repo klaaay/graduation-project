@@ -97,6 +97,7 @@ class details extends Component<IDetails & RouteComponentProps> {
         this.state.data['classify' + parsed.classify],
         parsed.title
       );
+      console.log(pic, video, pdf);
       return (
         <StickyContainer>
           <Tabs
@@ -114,15 +115,21 @@ class details extends Component<IDetails & RouteComponentProps> {
                 description={info.description}
               />
             </TabPane>
-            <TabPane tab="图片展示" key="2">
-              <ImgShow pic={pic} />
-            </TabPane>
-            <TabPane tab="视频演示" key="3">
-              <VideoShow video={video} />
-            </TabPane>
-            <TabPane tab="演示文稿" key="4">
-              <PdfShow pdf={pdf} />
-            </TabPane>
+            {pic.length && (
+              <TabPane tab="图片展示" key="2">
+                <ImgShow pic={pic} />
+              </TabPane>
+            )}
+            {video.length && (
+              <TabPane tab="视频演示" key="3">
+                <VideoShow video={video} />
+              </TabPane>
+            )}
+            {pdf.length && (
+              <TabPane tab="演示文稿" key="4">
+                <PdfShow pdf={pdf} />
+              </TabPane>
+            )}
           </Tabs>
         </StickyContainer>
       );

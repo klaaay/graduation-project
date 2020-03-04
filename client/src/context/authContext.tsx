@@ -83,12 +83,10 @@ function useAuth(): IUseAuthResult {
     });
     try {
       const { data, msg, isError } = await authLogin(email, password);
-      console.log('msg', msg);
       if (!isError) {
         const { name, token } = data;
         Cookies.set('token', token);
         Axios.defaults.headers.common['x-auth-token'] = token;
-
         dispatch({
           type: 'LOGIN_SUCCESS',
           payload: {

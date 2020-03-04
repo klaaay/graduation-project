@@ -26,7 +26,11 @@ export default class pdfShow extends Component<IPdfShow> {
   render() {
     return (
       <div className="myPdf">
-        <embed src={this.props.pdf[0].pdf} type="" className="myPdf-show" />
+        <embed
+          src={this.props.pdf.length && this.props.pdf[0].pdf}
+          type=""
+          className="myPdf-show"
+        />
         <div className="myPdf-gallery">
           {this.props.pdf.map((item, index) => (
             <img

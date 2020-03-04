@@ -1,6 +1,10 @@
 import Axios, { AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
+import Cookies from 'js-cookie';
+
 const IP = 'http://localhost:3030';
+
+Axios.defaults.headers.common['x-auth-token'] = Cookies.get('token');
 
 export type IWrappedAxiosResult<T> = {
   data: T | null;
@@ -26,7 +30,8 @@ export default (
     })
     .catch(error => {
       if (error.response.data.errors) {
-        !configParams.skipInfo && message.error(error.response.data.errors[0]);
+        !configParams.skipInfo &&
+          message.error(error.response.data.errors[0].msg);
         return {
           isError: true,
           data: null,
