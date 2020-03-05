@@ -17,9 +17,6 @@ export const tokenLogin = () => {
     method: 'get',
     url: `/api/auth`,
     skipInfo: true
-    // headers: {
-    //   'x-auth-token': Cookies.get('token')
-    // }
   });
 };
 
@@ -27,9 +24,6 @@ export const getProjects = () => {
   return wrappedAxios({
     method: 'get',
     url: `/api/projects`
-    // headers: {
-    //   'x-auth-token': Cookies.get('token')
-    // }
   });
 };
 
@@ -49,5 +43,20 @@ export const createProject = ({ type, name, description }) => {
       name,
       description
     }
+  });
+};
+
+export const updateProject = ({ id, data }) => {
+  return wrappedAxios({
+    method: 'put',
+    url: `/api/projects/${id}`,
+    data: data
+  });
+};
+
+export const deleteProject = ({ id }) => {
+  return wrappedAxios({
+    method: 'delete',
+    url: `/api/projects/${id}`
   });
 };

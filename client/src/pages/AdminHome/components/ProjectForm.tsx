@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, message, Upload } from 'antd';
-import { getTypes, createProject } from '@/service';
-import { IWrappedAxiosResult } from '@/service/wrappedAxios';
-import { UploadOutlined } from '@ant-design/icons';
+import React, { useState, useEffect, FC } from 'react';
+import { Form, Input, Button, Select, message } from 'antd';
+import { getTypes, createProject, updateProject } from '@/service';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -21,18 +19,52 @@ export type ITypeListDataItem = {
   text: string;
 };
 
-const ProjectForm = ({ setMode, setCoverPath }) => {
+type IProjectForm = {
+  record?: {
+    name: string;
+    type: string;
+    description: string;
+    _id: string;
+  };
+  modalMode: string;
+  setMode: React.Dispatch<React.SetStateAction<string>>;
+  setCoverPath: React.Dispatch<React.SetStateAction<string>>;
+  handleGetProjects: any;
+  handleCancel: any;
+};
+
+const ProjectForm: FC<IProjectForm> = ({
+  setMode,
+  setCoverPath,
+  record,
+  modalMode,
+  handleGetProjects,
+  handleCancel
+}) => {
   const onFinish = values => {
     console.log('Success:', values);
-    createProject(values).then(res => {
-      const { isError, msg, data } = res;
-      if (!isError) {
-        const { cover } = data;
-        message.success(msg);
-        setMode('upload');
-        setCoverPath(cover);
-      }
-    });
+    modalMode === 'create' &&
+      createProject(values).then(res => {
+        const { isError, msg, data } = res;
+        if (!isError) {
+          const { cover } = data;
+          message.success(msg);
+          setMode('upload');
+          setCoverPath(cover);
+        }
+      });
+    modalMode === 'edit' &&
+      updateProject({
+        id: record._id,
+        data: values
+      }).then(res => {
+        const { isError, msg, data } = res;
+        if (!isError) {
+          message.success(msg);
+          handleGetProjects();
+          handleCancel();
+        }
+      });
   };
 
   const onFinishFailed = errorInfo => {
@@ -55,19 +87,15 @@ const ProjectForm = ({ setMode, setCoverPath }) => {
     handleGetTypes();
   }, []);
 
-  const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
   return (
     <Form
       {...layout}
       name="basic"
-      initialValues={{ remember: true }}
+      initialValues={{
+        name: record && record.name,
+        type: record && record.type,
+        description: record && record.description
+      }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}>
       <Form.Item
@@ -96,22 +124,11 @@ const ProjectForm = ({ setMode, setCoverPath }) => {
         rules={[{ required: true, message: '请输入项目描述' }]}>
         <TextArea />
       </Form.Item>
-      {/* <Form.Item
-        name="upload"
-        label="Upload"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-        extra="">
-        <Upload name="logo" action="/upload.do" listType="picture">
-          <Button>
-            <UploadOutlined /> Click to upload
-          </Button>
-        </Upload>
-      </Form.Item> */}
 
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">
-          提交
+          {modalMode === 'create' && '提交'}
+          {modalMode === 'edit' && '确认'}
         </Button>
       </Form.Item>
     </Form>

@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 
 const Project = require("../models/Project");
 const User = require("../models/User");
+const rimraf = require("rimraf");
 
 // @route       POST api/proejcts
 // @desc        Get all users proejcts
@@ -19,7 +20,6 @@ router.get("/", auth, async (req, res) => {
 
     res.json({ data: proejcts });
   } catch (err) {
-    console.error(err.message);
     res.status(500).send({ msg: "服务器错误" });
   }
 });
@@ -86,7 +86,6 @@ router.post(
       const project = await newProject.save();
       res.json({ data: project, msg: "创建项目成功" });
     } catch (err) {
-      console.error(err.message);
       res.status(500).send({ msg: "服务器错误" });
     }
   }
@@ -116,9 +115,8 @@ router.put("/:id", auth, async (req, res) => {
       { $set: projectFields },
       { new: true }
     );
-    res.json(project);
+    res.json({ data: project, msg: "更新项目成功" });
   } catch (err) {
-    console.error(err.message);
     res.status(500).send("服务器错误");
   }
 });
@@ -133,10 +131,13 @@ router.delete("/:id", auth, async (req, res) => {
     // Make sure user owns project
     if (project.user.toString() !== req.user.id)
       return res.status(401).json({ msg: "用户验证失败" });
+    rimraf(project.path, function(err) {
+      // 删除当前目录下的 aaa
+      if (err) console.log(err);
+    });
     await Project.findByIdAndRemove(req.params.id);
     res.json({ msg: "项目删除成功" });
   } catch (err) {
-    console.error(err.message);
     res.status(500).send("服务器错误");
   }
 });

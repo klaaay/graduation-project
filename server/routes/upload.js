@@ -25,19 +25,13 @@ router.post("/cover", (req, res) => {
     return res.status(400).json({ msg: "No file uploaded" });
   }
 
-  console.log("req.body", req.body);
-
-  console.log("req.files", req.files);
-
   const { projectCoverPath } = req.body;
 
   const file = req.files.file;
-  console.log(file);
 
   file.mv(`${projectCoverPath}`, err => {
     if (err) {
-      console.error(err);
-      return res.status(500).send(err);
+      return res.status(500).send({ data: err, msg: "服务器错误" });
     }
 
     res.json({ fileName: file.name, filePath: projectCoverPath });
