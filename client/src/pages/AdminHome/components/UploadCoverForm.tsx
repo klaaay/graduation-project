@@ -6,48 +6,17 @@ const formItemLayout = {
   wrapperCol: { span: 16, offset: 4 }
 };
 
-const normFile = e => {
-  console.log('Upload event:', e);
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList;
-};
-
-const UploadCoverForm = () => {
-  const onFinish = values => {
-    console.log('Received values of form: ', values);
-  };
-
+const UploadCoverForm = ({ coverPath }) => {
   return (
-    <Form
-      name="validate_other"
-      {...formItemLayout}
-      onFinish={onFinish}
-      initialValues={{}}>
-      <Form.Item
-        name="upload"
-        label=""
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-        extra="">
-        <Upload
-          style={{ width: '100%' }}
-          name="logo"
-          action="/upload.do"
-          listType="picture">
-          <Button>
-            <UploadOutlined /> 点击上传项目封面
-          </Button>
-        </Upload>
-      </Form.Item>
-
-      {/* <Form.Item wrapperCol={{ span: 4, offset: 16 }}>
-        <Button type="primary" htmlType="submit">
-          确认
-        </Button>
-      </Form.Item> */}
-    </Form>
+    <Upload
+      style={{ width: '100%' }}
+      action="http://localhost:3030/api/upload/cover"
+      data={{ projectCoverPath: coverPath }}
+      listType="picture">
+      <Button>
+        <UploadOutlined /> 点击上传项目封面
+      </Button>
+    </Upload>
   );
 };
 

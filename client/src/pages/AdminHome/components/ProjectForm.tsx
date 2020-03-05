@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, message } from 'antd';
+import { Form, Input, Button, Select, message, Upload } from 'antd';
 import { getTypes, createProject } from '@/service';
 import { IWrappedAxiosResult } from '@/service/wrappedAxios';
+import { UploadOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -20,16 +21,18 @@ export type ITypeListDataItem = {
   text: string;
 };
 
-const ProjectForm = ({ setMode }) => {
+const ProjectForm = ({ setMode, setCoverPath }) => {
   const onFinish = values => {
     console.log('Success:', values);
     createProject(values).then(res => {
-      const { isError, msg } = res;
+      const { isError, msg, data } = res;
       if (!isError) {
+        const { cover } = data;
         message.success(msg);
+        setMode('upload');
+        setCoverPath(cover);
       }
     });
-    // setMode('upload');
   };
 
   const onFinishFailed = errorInfo => {
@@ -51,6 +54,14 @@ const ProjectForm = ({ setMode }) => {
   useEffect(() => {
     handleGetTypes();
   }, []);
+
+  const normFile = e => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
 
   return (
     <Form
@@ -85,6 +96,18 @@ const ProjectForm = ({ setMode }) => {
         rules={[{ required: true, message: '请输入项目描述' }]}>
         <TextArea />
       </Form.Item>
+      {/* <Form.Item
+        name="upload"
+        label="Upload"
+        valuePropName="fileList"
+        getValueFromEvent={normFile}
+        extra="">
+        <Upload name="logo" action="/upload.do" listType="picture">
+          <Button>
+            <UploadOutlined /> Click to upload
+          </Button>
+        </Upload>
+      </Form.Item> */}
 
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit">

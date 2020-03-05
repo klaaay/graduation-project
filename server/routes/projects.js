@@ -55,69 +55,35 @@ router.post(
 
     const { name, description, type } = req.body;
 
+    const newProjectPath = path.resolve(__dirname, "../", "./data", type, name);
+
     try {
       const newProject = new Project({
         name,
         description,
         type,
+        path: newProjectPath,
+        cover: path.resolve(newProjectPath, "img", "cover.jpg"),
         user: req.user.id
       });
 
-      const newProjectPath = path.resolve(
-        __dirname,
-        "../",
-        "./data",
-        type,
-        name
-      );
-
-      const newProjectPathImg = path.resolve(
-        __dirname,
-        "../",
-        "./data",
-        type,
-        name,
-        "img"
-      );
-      const newProjectPathPdf = path.resolve(
-        __dirname,
-        "../",
-        "./data",
-        type,
-        name,
-        "pdf"
-      );
-      const newProjectPathVideo = path.resolve(
-        __dirname,
-        "../",
-        "./data",
-        type,
-        name,
-        "video"
-      );
-
-      console.log(newProjectPath);
       if (!fs.existsSync(newProjectPath)) {
         fs.mkdirSync(newProjectPath);
-        fs.mkdirSync(newProjectPathImg);
-        fs.mkdirSync(newProjectPathPdf);
-        fs.mkdirSync(newProjectPathVideo);
+        fs.mkdirSync(path.resolve(newProjectPath, "img"));
+        fs.mkdirSync(path.resolve(newProjectPath, "pdf"));
+        fs.mkdirSync(path.resolve(newProjectPath, "video"));
         fs.writeFile(
           `${newProjectPath}/description.txt`,
           description,
           "utf8",
           function(error) {
             if (error) {
-              console.log(error);
-              return false;
+              res.status(500).send({ msg: "保存描述文件错误" });
             }
-            console.log("写入成功");
           }
         );
       }
-
       const project = await newProject.save();
-
       res.json({ data: project, msg: "创建项目成功" });
     } catch (err) {
       console.error(err.message);

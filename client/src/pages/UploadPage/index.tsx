@@ -5,8 +5,10 @@ import { UploadOutlined } from '@ant-design/icons';
 const UploadPage = () => {
   return (
     <Upload
-      action="http://localhost:3030/api/files/5e4cad181616c54c781cc405"
-      directory>
+      action="http://localhost:3030/api/upload"
+      data={{ name: 'wz' }}
+      // directory
+    >
       <Button>
         <UploadOutlined /> Upload Directory
       </Button>

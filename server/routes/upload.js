@@ -3,12 +3,10 @@ const router = express.Router();
 const File = require("../models/File");
 const Fgroup = require("../models/Fgroup");
 
-router.post("/cover", (req, res) => {
+router.post("/", (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
-
-  console.log(req.files);
 
   const file = req.files.file;
 
@@ -18,9 +16,31 @@ router.post("/cover", (req, res) => {
       return res.status(500).send(err);
     }
 
-    console.log(file);
-
     res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+  });
+});
+
+router.post("/cover", (req, res) => {
+  if (req.files === null) {
+    return res.status(400).json({ msg: "No file uploaded" });
+  }
+
+  console.log("req.body", req.body);
+
+  console.log("req.files", req.files);
+
+  const { projectCoverPath } = req.body;
+
+  const file = req.files.file;
+  console.log(file);
+
+  file.mv(`${projectCoverPath}`, err => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+
+    res.json({ fileName: file.name, filePath: projectCoverPath });
   });
 });
 

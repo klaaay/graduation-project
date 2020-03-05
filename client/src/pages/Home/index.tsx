@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import {
-  Layout,
-  Menu,
-  Pagination,
-  Carousel,
-  Input,
-  AutoComplete
-} from 'antd';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Layout, Menu, Pagination, Carousel, Input, AutoComplete } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import { Link } from 'react-router-dom';
@@ -26,7 +20,9 @@ import './styles/homeCarousel.css';
 
 let data;
 
-export default class main extends Component {
+type IMain = {};
+
+class main extends Component<IMain & RouteComponentProps> {
   cardInfoAnimation = () => {
     var $carImg;
     var $carInfo;
@@ -254,3 +250,5 @@ export default class main extends Component {
     );
   }
 }
+
+export default withRouter(main);

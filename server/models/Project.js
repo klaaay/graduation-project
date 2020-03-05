@@ -21,6 +21,14 @@ const ProjectShema = mongoose.Schema({
     type: String,
     require: true
   },
+  path: {
+    type: String,
+    require: true
+  },
+  cover: {
+    type: String,
+    require: true
+  },
   date: {
     type: Date,
     default: Date.now

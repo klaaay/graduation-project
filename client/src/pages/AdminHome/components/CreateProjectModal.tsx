@@ -5,7 +5,8 @@ import UploadCoverForm from './UploadCoverForm';
 
 const CreateProjectModal = () => {
   const [visible, setVisible] = useState(false);
-  const [mode, setMode] = useState('basic');
+  const [mode, setMode] = useState('upload');
+  const [coverPath, setCoverPath] = useState('');
 
   const showModal = () => {
     setMode('basic');
@@ -39,8 +40,10 @@ const CreateProjectModal = () => {
         visible={visible}
         onOk={handleCancel}
         onCancel={handleCancel}>
-        {mode === 'basic' && <ProjectForm setMode={setMode} />}
-        {mode === 'upload' && <UploadCoverForm />}
+        {mode === 'basic' && (
+          <ProjectForm setMode={setMode} setCoverPath={setCoverPath} />
+        )}
+        {mode === 'upload' && <UploadCoverForm coverPath={coverPath} />}
       </Modal>
     </div>
   );

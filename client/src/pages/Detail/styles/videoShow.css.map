@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,QAAQ,CAAC;EACP,KAAK,EAAE,IAAI;CAKZ;;AAND,AAGE,QAHM,CAGN,KAAK,CAAC;EACJ,KAAK,EAAE,eAAe;CACvB",
+    "sources": [
+        "videoShow.scss"
+    ],
+    "names": [],
+    "file": "videoShow.css"
+}
