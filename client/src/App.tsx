@@ -9,6 +9,7 @@ import Home from '@/pages/Home';
 import Detail from '@/pages/Detail';
 import AdminLogin from '@/pages/AdminLogin';
 import AdminHome from '@/pages/AdminHome';
+import AdminProjectDetail from '@/pages/AdminProjectDetail';
 import AdminCovert from '@/pages/AdminCovert';
 import { AuthProvider, useAuth } from '@/context/authContext';
 
@@ -27,6 +28,11 @@ function App() {
               <Switch>
                 <Route exact path="/admin/login" component={AdminLogin} />
                 <Route exact path="/admin/home" component={AdminHome} />
+                <Route
+                  exact
+                  path="/admin/home/projectDetail"
+                  component={AdminProjectDetail}
+                />
                 <Route exact path="/admin/covert" component={AdminCovert} />
               </Switch>
             </Route>

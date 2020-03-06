@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Table, Divider, message } from 'antd';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CreateProjectModal from './ProjectModal';
 import { deleteProject } from '@/service';
+import queryString from 'query-string';
 
 // const fakeData = [
 //   {
@@ -15,7 +17,16 @@ import { deleteProject } from '@/service';
 //   }
 // ];
 
-const ProjectTable = ({ projectsData, handleGetProjects }) => {
+type IProjectTable = {
+  projectsData: any;
+  handleGetProjects: any;
+};
+
+const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
+  projectsData,
+  handleGetProjects,
+  history
+}) => {
   const handleDeleteProject = id => {
     deleteProject({
       id
@@ -32,12 +43,28 @@ const ProjectTable = ({ projectsData, handleGetProjects }) => {
     {
       title: '项目名称',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      render: (text, record) => {
+        return (
+          <a
+            onClick={() => {
+              history.push(
+                `/admin/home/projectDetail?${queryString.stringify({
+                  name: text,
+                  projectId: record._id
+                })}`
+              );
+            }}>
+            {text}
+          </a>
+        );
+      }
     },
     {
       title: '类别',
       dataIndex: 'type',
-      key: 'type'
+      key: 'type',
+      render: text => text.slice(1)
     },
     {
       title: '描述',
@@ -77,4 +104,4 @@ const ProjectTable = ({ projectsData, handleGetProjects }) => {
   );
 };
 
-export default ProjectTable;
+export default withRouter(ProjectTable);

@@ -15,7 +15,7 @@ const AdminNavbar: FC<IAdminNavbarProps & RouteComponentProps> = ({
   const { state, login, logout, dispatch } = useAuth();
   const { hasLogin, isLogin, name } = state;
 
-  const selectedKeys = useRef([location.pathname]);
+  const selectedKeys = useRef([location.pathname.split('/')[2]]);
 
   useEffect(() => {
     if (hasLogin) {
@@ -47,8 +47,6 @@ const AdminNavbar: FC<IAdminNavbarProps & RouteComponentProps> = ({
     </Menu>
   );
 
-  console.log(selectedKeys);
-
   return (
     <Header className="admin-navbar">
       <span
@@ -67,7 +65,7 @@ const AdminNavbar: FC<IAdminNavbarProps & RouteComponentProps> = ({
         style={{ lineHeight: '64px' }}>
         {hasLogin && (
           <Menu.Item
-            key="/admin/home"
+            key="home"
             onClick={() => {
               history.push('/admin/home');
             }}>
@@ -76,7 +74,7 @@ const AdminNavbar: FC<IAdminNavbarProps & RouteComponentProps> = ({
         )}
         {hasLogin && (
           <Menu.Item
-            key="/admin/covert"
+            key="covert"
             onClick={() => {
               history.push('/admin/covert');
             }}>

@@ -49,12 +49,6 @@ main {
   border-color: transparent !important;
 }
 
-.main-content {
-  padding: 30px;
-  background-color: #fff;
-  height: calc(100% - 140px);
-}
-
 .ant-upload {
   width: 100%;
 }

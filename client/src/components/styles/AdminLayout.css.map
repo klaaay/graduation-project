@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,aADW,CACX,aAAa,CAAC;EACZ,UAAU,EAAE,IAAI;EAChB,aAAa,EAAE,IAAI;CACpB;;AAJH,AAKE,aALW,CAKX,aAAa,CAAC;EACZ,OAAO,EAAE,IAAI;EACb,gBAAgB,EAAE,IAAI;EACtB,MAAM,EAAE,kBAAkB;CAC3B",
+    "sources": [
+        "AdminLayout.scss"
+    ],
+    "names": [],
+    "file": "AdminLayout.css"
+}
