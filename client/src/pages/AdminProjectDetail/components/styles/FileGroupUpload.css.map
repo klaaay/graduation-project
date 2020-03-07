@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,kBAAkB,CAAC;EACjB,UAAU,EAAE,IAAI;CACjB",
+    "sources": [
+        "FileGroupUpload.scss"
+    ],
+    "names": [],
+    "file": "FileGroupUpload.css"
+}

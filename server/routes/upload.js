@@ -1,41 +1,67 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
 const File = require("../models/File");
 const Fgroup = require("../models/Fgroup");
+const auth = require("../middleware/auth");
+const images = require("images");
+const Project = require("../models/Project");
 
-router.post("/", (req, res) => {
+router.post("/cover", auth, async (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
-
+  const { projectCoverPath } = req.body;
+  if (!projectCoverPath) {
+    return res.status(500).send({ msg: "项目封面路径获取失败" });
+  }
   const file = req.files.file;
-
-  file.mv(`${__dirname}/img/${file.name}`, err => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
-  });
+  const { name, size, mimetype } = file;
+  try {
+    await file.mv(`${projectCoverPath}`);
+    const newFile = new File({
+      name,
+      size,
+      type: mimetype,
+      path: projectCoverPath
+    });
+    await newFile.save();
+    res.json({ fileName: file.name, filePath: projectCoverPath });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ data: error, msg: "服务器错误" });
+  }
 });
 
-router.post("/cover", (req, res) => {
+router.post("/pic/:id", async (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
+  const originalFile = req.files.file;
+  const { name, size, mimetype } = originalFile;
+  const projectId = req.params.id;
+  const project = await Project.findById(projectId);
+  const { _id, path: projectPath } = project;
 
-  const { projectCoverPath } = req.body;
-
-  const file = req.files.file;
-
-  file.mv(`${projectCoverPath}`, err => {
-    if (err) {
-      return res.status(500).send({ data: err, msg: "服务器错误" });
+  try {
+    await originalFile.mv(`${projectPath}/img/${name}`);
+    if (!fs.existsSync(`${projectPath}/img/thumbs`)) {
+      fs.mkdirSync(`${projectPath}/img/thumbs`);
     }
-
-    res.json({ fileName: file.name, filePath: projectCoverPath });
-  });
+    images(`${projectPath}/img/${name}`)
+      .size(65)
+      .save(`${projectPath}/img/thumbs/${name}`, {
+        quality: 60
+      });
+    console.log(images(`${projectPath}/img/thumbs/${name}`));
+    res.json({
+      originalFile: `${projectPath}/img/${name}`,
+      thumbnailFile: `${projectPath}/img/thumbs/${name}`
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ data: error, msg: "服务器错误" });
+  }
 });
 
 router.post("/fgroup/:id", async (req, res) => {

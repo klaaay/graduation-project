@@ -36,7 +36,7 @@ const UploadModal = () => {
           <Radio.Button value="video">视频</Radio.Button>
           <Radio.Button value="pdf">演示文稿</Radio.Button>
         </Radio.Group>
-        <FileGroupUpload />
+        <FileGroupUpload mode={mode} />
       </Modal>
     </div>
   );

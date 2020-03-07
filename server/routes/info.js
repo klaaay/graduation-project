@@ -59,28 +59,41 @@ classifys.sort().forEach(async (classify, index_classify) => {
       if (file_items.includes("video")) {
         video = fs
           .readdirSync(`./data/${classify}/${project}/video`)
-          .filter(video_item => video_item.split(".")[1] === "jpg")
+          .filter(
+            video_item =>
+              video_item.split(".")[1] === "jpg" ||
+              video_item.split(".")[1] === "png" ||
+              video_item.split(".")[1] === "gif"
+          )
           .map(video_item => ({
             video: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${
               video_item.split(".")[0]
             }.mp4`,
-            thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${
-              video_item.split(".")[0]
-            }.jpg`,
+            // thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${
+            //   video_item.split(".")[0]
+            // }.jpg`,
+            thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${video_item}`,
             alt: video_item.split(".")[0]
           }));
       }
       if (file_items.includes("pdf")) {
         pdf = fs
           .readdirSync(`./data/${classify}/${project}/pdf`)
-          .filter(pdf_item => pdf_item.split(".")[1] === "jpg")
+          .filter(
+            pdf_item =>
+              pdf_item.split(".")[1] === "jpg" ||
+              pdf_item.split(".")[1] === "png" ||
+              pdf_item.split(".")[1] === "gif"
+          )
           .map(pdf_item => ({
             pdf: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${
               pdf_item.split(".")[0]
             }.pdf`,
-            thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${
-              pdf_item.split(".")[0]
-            }.jpg`,
+            // thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${
+            //   pdf_item.split(".")[0]
+            // }.jpg`,
+            // pdf: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${pdf_item}`,
+            thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${pdf_item}`,
             alt: pdf_item.split(".")[0]
           }));
       }
