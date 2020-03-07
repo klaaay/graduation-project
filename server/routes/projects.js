@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
+
 const { check, validationResult } = require("express-validator");
 const auth = require("../middleware/auth");
 
 const Project = require("../models/Project");
 const User = require("../models/User");
+const File = require("../models/File");
 const rimraf = require("rimraf");
 
 // @route       POST api/proejcts
@@ -55,25 +57,27 @@ router.post(
 
     const { name, description, type } = req.body;
 
-    const newProjectPath = path.resolve(__dirname, "../", "./data", type, name);
+    const relativePath = `/data/${type}/${name}`;
+
+    const localPath = path.resolve(__dirname, "../", "./data", type, name);
 
     try {
       const newProject = new Project({
         name,
         description,
         type,
-        path: newProjectPath,
-        cover: path.resolve(newProjectPath, "img", "cover.jpg"),
+        relativePath,
+        localPath,
         user: req.user.id
       });
 
-      if (!fs.existsSync(newProjectPath)) {
-        fs.mkdirSync(newProjectPath);
-        fs.mkdirSync(path.resolve(newProjectPath, "img"));
-        fs.mkdirSync(path.resolve(newProjectPath, "pdf"));
-        fs.mkdirSync(path.resolve(newProjectPath, "video"));
+      if (!fs.existsSync(localPath)) {
+        fs.mkdirSync(localPath);
+        fs.mkdirSync(path.resolve(localPath, "img"));
+        fs.mkdirSync(path.resolve(localPath, "pdf"));
+        fs.mkdirSync(path.resolve(localPath, "video"));
         fs.writeFile(
-          `${newProjectPath}/description.txt`,
+          `${localPath}/description.txt`,
           description,
           "utf8",
           function(error) {
@@ -131,14 +135,15 @@ router.delete("/:id", auth, async (req, res) => {
     // Make sure user owns project
     if (project.user.toString() !== req.user.id)
       return res.status(401).json({ msg: "用户验证失败" });
-    rimraf(project.path, function(err) {
+    rimraf(project.localPath, function(err) {
       // 删除当前目录下的 aaa
       if (err) console.log(err);
     });
     await Project.findByIdAndRemove(req.params.id);
     res.json({ msg: "项目删除成功" });
   } catch (err) {
-    res.status(500).send("服务器错误");
+    console.log(err);
+    res.status(500).send({ msg: "服务器错误" });
   }
 });
 

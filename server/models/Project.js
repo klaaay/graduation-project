@@ -21,11 +21,11 @@ const ProjectShema = mongoose.Schema({
     type: String,
     require: true
   },
-  path: {
+  relativePath: {
     type: String,
     require: true
   },
-  cover: {
+  localPath: {
     type: String,
     require: true
   },

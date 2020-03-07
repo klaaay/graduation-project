@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
+const config = require("config");
 const File = require("../models/File");
 const Fgroup = require("../models/Fgroup");
 const auth = require("../middleware/auth");
@@ -11,22 +12,34 @@ router.post("/cover", auth, async (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
-  const { projectCoverPath } = req.body;
-  if (!projectCoverPath) {
-    return res.status(500).send({ msg: "项目封面路径获取失败" });
+  const { projectId } = req.body;
+  const project = await Project.findById(projectId);
+  if (!project) {
+    return res.status(500).send({ msg: "该项目不存在" });
   }
   const file = req.files.file;
   const { name, size, mimetype } = file;
   try {
-    await file.mv(`${projectCoverPath}`);
+    await file.mv(`${project.localPath}/img/cover.jpg`);
     const newFile = new File({
       name,
-      size,
       type: mimetype,
-      path: projectCoverPath
+      localPath: `${project.localPath}/img/cover.jpg`,
+      remotePath: `${config.get("DOMAIN")}:${config.get("SERVER_PORT")}${
+        project.relativePath
+      }/img/cover.jpg`
     });
-    await newFile.save();
-    res.json({ fileName: file.name, filePath: projectCoverPath });
+    const coverFile = await newFile.save();
+    await Project.findByIdAndUpdate(
+      projectId,
+      {
+        $set: {
+          cover: coverFile._id
+        }
+      },
+      { new: true }
+    );
+    res.json({ data: coverFile, msg: "上传封面成功" });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ data: error, msg: "服务器错误" });
@@ -38,25 +51,55 @@ router.post("/pic/:id", async (req, res) => {
     return res.status(400).json({ msg: "No file uploaded" });
   }
   const originalFile = req.files.file;
-  const { name, size, mimetype } = originalFile;
+  const { name, mimetype } = originalFile;
   const projectId = req.params.id;
   const project = await Project.findById(projectId);
-  const { _id, path: projectPath } = project;
+  const { _id, localPath, relativePath } = project;
 
   try {
-    await originalFile.mv(`${projectPath}/img/${name}`);
-    if (!fs.existsSync(`${projectPath}/img/thumbs`)) {
-      fs.mkdirSync(`${projectPath}/img/thumbs`);
+    await originalFile.mv(`${localPath}/img/${name}`);
+    if (!fs.existsSync(`${localPath}/img/thumbs`)) {
+      fs.mkdirSync(`${localPath}/img/thumbs`);
     }
-    images(`${projectPath}/img/${name}`)
+    images(`${localPath}/img/${name}`)
       .size(65)
-      .save(`${projectPath}/img/thumbs/${name}`, {
+      .save(`${localPath}/img/thumbs/${name}`, {
         quality: 60
       });
-    console.log(images(`${projectPath}/img/thumbs/${name}`));
+    console.log(images(`${localPath}/img/thumbs/${name}`));
+
+    const thumbFile = new File({
+      name,
+      type: mimetype,
+      remotePath: `${config.get("DOMAIN")}:${config.get(
+        "SERVER_PORT"
+      )}${relativePath}/img/thumbs/${name}`,
+      localPath: `${localPath}/img/thumbs/${name}`
+    });
+
+    const detailFile = new File({
+      name,
+      type: mimetype,
+      remotePath: `${config.get("DOMAIN")}:${config.get(
+        "SERVER_PORT"
+      )}${relativePath}/img/${name}`,
+      localPath: `${localPath}/img/${name}`
+    });
+
+    const newThumbFile = await thumbFile.save();
+    const newDetailFile = await detailFile.save();
+
+    const fGroup = new Fgroup({
+      project: projectId,
+      thumb: newThumbFile._id,
+      detail: newDetailFile._id
+    });
+
+    const newFgroup = await fGroup.save();
+
     res.json({
-      originalFile: `${projectPath}/img/${name}`,
-      thumbnailFile: `${projectPath}/img/thumbs/${name}`
+      data: newFgroup,
+      msg: "图片上传成功"
     });
   } catch (error) {
     console.log(error);

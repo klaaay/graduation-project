@@ -5,15 +5,15 @@ const FileSchema = mongoose.Schema({
     type: String,
     require: true
   },
-  size: {
-    type: Number,
-    require: true
-  },
-  path: {
+  type: {
     type: String,
     require: true
   },
-  type: {
+  remotePath: {
+    type: String,
+    require: true
+  },
+  localPath: {
     type: String,
     require: true
   },

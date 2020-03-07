@@ -1,13 +1,17 @@
 import React from 'react';
 import { Form, Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import Cookies from 'js-cookie';
 
-const UploadCoverForm = ({ coverPath, handleCancel, handleGetProjects }) => {
+const UploadCoverForm = ({ projectId, handleCancel, handleGetProjects }) => {
   return (
     <Upload
       style={{ width: '100%' }}
       action="http://localhost:3030/api/upload/cover"
-      data={{ projectCoverPath: coverPath }}
+      data={{ projectId: projectId }}
+      headers={{
+        ['x-auth-token']: Cookies.get('token')
+      }}
       onChange={e => {
         if (e.file.status === 'done') {
           message.success('封面上传成功');

@@ -28,14 +28,14 @@ type IProjectForm = {
   };
   modalMode: string;
   setMode: React.Dispatch<React.SetStateAction<string>>;
-  setCoverPath: React.Dispatch<React.SetStateAction<string>>;
+  setProjectId: React.Dispatch<React.SetStateAction<string>>;
   handleGetProjects: any;
   handleCancel: any;
 };
 
 const ProjectForm: FC<IProjectForm> = ({
   setMode,
-  setCoverPath,
+  setProjectId,
   record,
   modalMode,
   handleGetProjects,
@@ -47,10 +47,10 @@ const ProjectForm: FC<IProjectForm> = ({
       createProject(values).then(res => {
         const { isError, msg, data } = res;
         if (!isError) {
-          const { cover } = data;
+          const { _id } = data;
           message.success(msg);
           setMode('upload');
-          setCoverPath(cover);
+          setProjectId(_id);
         }
       });
     modalMode === 'edit' &&

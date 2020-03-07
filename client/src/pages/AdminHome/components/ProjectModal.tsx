@@ -21,7 +21,7 @@ const CreateProjectModal: FC<ICreateProjectModal> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [mode, setMode] = useState('basic');
-  const [coverPath, setCoverPath] = useState('');
+  const [projectId, setProjectId] = useState('');
 
   const showModal = () => {
     modalMode === 'create' && setMode('basic');
@@ -65,7 +65,7 @@ const CreateProjectModal: FC<ICreateProjectModal> = ({
         {mode === 'basic' && (
           <ProjectForm
             setMode={setMode}
-            setCoverPath={setCoverPath}
+            setProjectId={setProjectId}
             modalMode={modalMode}
             record={record}
             handleGetProjects={handleGetProjects}
@@ -74,7 +74,7 @@ const CreateProjectModal: FC<ICreateProjectModal> = ({
         )}
         {mode === 'upload' && (
           <UploadCoverForm
-            coverPath={coverPath}
+            projectId={projectId}
             handleCancel={handleCancel}
             handleGetProjects={handleGetProjects}
           />
