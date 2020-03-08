@@ -28,9 +28,10 @@
 
 #infoRow .info-img img {
   width: 100%;
+  max-width: 500px;
   margin: 10px;
-  -webkit-box-shadow: 0 0 10px #2F2F2F;
-          box-shadow: 0 0 10px #2F2F2F;
+  -webkit-box-shadow: 0 0 10px #2f2f2f;
+          box-shadow: 0 0 10px #2f2f2f;
 }
 
 #infoRow .info-space-1,

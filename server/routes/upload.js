@@ -7,6 +7,9 @@ const Fgroup = require("../models/Fgroup");
 const auth = require("../middleware/auth");
 const images = require("images");
 const Project = require("../models/Project");
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 router.post("/cover", auth, async (req, res) => {
   if (req.files === null) {
@@ -66,7 +69,6 @@ router.post("/pic/:id", async (req, res) => {
       .save(`${localPath}/img/thumbs/${name}`, {
         quality: 60
       });
-    console.log(images(`${localPath}/img/thumbs/${name}`));
 
     const thumbFile = new File({
       name,
@@ -92,7 +94,8 @@ router.post("/pic/:id", async (req, res) => {
     const fGroup = new Fgroup({
       project: projectId,
       thumb: newThumbFile._id,
-      detail: newDetailFile._id
+      detail: newDetailFile._id,
+      type: "pic"
     });
 
     const newFgroup = await fGroup.save();
@@ -107,54 +110,69 @@ router.post("/pic/:id", async (req, res) => {
   }
 });
 
-router.post("/fgroup/:id", async (req, res) => {
+router.post("/video/:id", async (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
 
-  const file = req.files.file;
-
+  const originalFile = req.files.file;
   const projectId = req.params.id;
+  const { name, size, mimetype } = originalFile;
+  const project = await Project.findById(projectId);
 
-  const { name, size, mimetype } = file;
+  const { _id, localPath, relativePath } = project;
 
-  thumbFile = new File({
-    name,
-    size,
-    type: mimetype
-  });
+  try {
+    await originalFile.mv(`${localPath}/video/${name}`);
 
-  detailFile = new File({
-    name,
-    size,
-    type: mimetype
-  });
+    new ffmpeg(`${localPath}/video/${name}`)
+      .screenshots({
+        timemarks: ["0.5"],
+        count: 1,
+        filename: `${name.split(".")[0]}.jpg`,
+        folder: `${localPath}/video`,
+        size: "500x500"
+      })
+      .on("end", async function() {
+        const thumbFile = new File({
+          name,
+          type: mimetype,
+          remotePath: `${config.get("DOMAIN")}:${config.get(
+            "SERVER_PORT"
+          )}${relativePath}/video/${name.split(".")[0]}.jpg`,
+          localPath: `${localPath}/video/${name.split(".")[0]}.jpg`
+        });
 
-  thumbFile.path = `${path.resolve(__dirname, "../")}/img/${file.name}`;
-  detailFile.path = `${path.resolve(__dirname, "../")}/img/${file.name}`;
+        const detailFile = new File({
+          name,
+          type: mimetype,
+          remotePath: `${config.get("DOMAIN")}:${config.get(
+            "SERVER_PORT"
+          )}${relativePath}/video/${name}`,
+          localPath: `${localPath}/video/${name}`
+        });
 
-  const newThumbFile = await thumbFile.save();
-  const newDetailFile = await detailFile.save();
+        const newThumbFile = await thumbFile.save();
+        const newDetailFile = await detailFile.save();
 
-  console.log("newThumbFile", newThumbFile.id);
-  console.log("newDetailFile", newDetailFile.id);
+        const fGroup = new Fgroup({
+          project: projectId,
+          thumb: newThumbFile._id,
+          detail: newDetailFile._id,
+          type: "video"
+        });
 
-  fgrpud = new Fgroup({
-    project: projectId,
-    thumb: newThumbFile.id,
-    detail: newDetailFile.id
-  });
+        const newFgroup = await fGroup.save();
 
-  await fgrpud.save();
-
-  file.mv(`${path.resolve(__dirname, "../")}/img/${file.name}`, err => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-
-    res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
-  });
+        res.json({
+          data: newFgroup,
+          msg: "视频上传成功"
+        });
+      });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ data: error, msg: "服务器错误" });
+  }
 });
 
 module.exports = router;

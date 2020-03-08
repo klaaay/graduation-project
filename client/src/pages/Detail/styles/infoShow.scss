@@ -1,74 +1,74 @@
 #infoRow {
-    background-color: rgb(53, 107, 156);
+  background-color: rgb(53, 107, 156);
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+
+  .info-img {
+    flex-basis: 40%;
     display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
-    .info-img {
+    img {
+      width: 100%;
+      max-width: 500px;
+      margin: 10px;
+      box-shadow: 0 0 10px #2f2f2f;
+    }
+  }
 
-        flex-basis: 40%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+  .info-space-1,
+  .info-space-2 {
+    flex-basis: 5%;
+  }
 
-        img {
-            width: 100%;
-            margin: 10px;
-            box-shadow: 0 0 10px #2F2F2F;
-        }
+  .info-text {
+    flex-basis: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .title {
+      color: white;
+      text-align: left;
+      padding-bottom: 20px;
     }
 
-    .info-space-1,
+    .description {
+      color: white;
+      line-height: 30px;
+      text-indent: 2em;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  #infoRow {
+    flex-direction: column;
+
+    .info-img {
+      padding: 10px;
+    }
+
     .info-space-2 {
-        flex-basis: 5%;
+      flex-basis: 5%;
     }
 
     .info-text {
-        flex-basis: 50%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
+      .title {
+        color: white;
+        text-align: center;
+        padding: 0 10px;
+        padding-bottom: 20px;
+      }
 
-        .title {
-            color: white;
-            text-align: left;
-            padding-bottom: 20px;
-        }
-
-        .description {
-            color: white;
-            line-height: 30px;
-            text-indent: 2em;
-        }
+      .description {
+        color: white;
+        line-height: 30px;
+        text-indent: 2em;
+      }
     }
-}
-
-@media (max-width:500px) {
-    #infoRow {
-        flex-direction: column;
-
-        .info-img {
-            padding: 10px;
-        }
-
-        .info-space-2 {
-            flex-basis: 5%;
-        }
-
-        .info-text {
-            .title {
-                color: white;
-                text-align: center;
-                padding: 0 10px;
-                padding-bottom: 20px;
-            }
-
-            .description {
-                color: white;
-                line-height: 30px;
-                text-indent: 2em;
-            }
-        }
-    }
+  }
 }

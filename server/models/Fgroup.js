@@ -13,6 +13,10 @@ const FgroupSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "files"
   },
+  type: {
+    type: String,
+    require: true
+  },
   date: {
     type: Date,
     default: Date.now

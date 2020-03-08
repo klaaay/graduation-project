@@ -18,7 +18,6 @@ app.use("/data", express.static("data"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/projects", require("./routes/projects"));
-// app.use("/api/files", require("./routes/files"));
 app.use("/api/info", require("./routes/info"));
 app.use("/api/upload", require("./routes/upload"));
 

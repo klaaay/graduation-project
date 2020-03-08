@@ -2,6 +2,54 @@
 # yarn lockfile v1
 
 
+"@ffmpeg-installer/darwin-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/darwin-x64/download/@ffmpeg-installer/darwin-x64-4.1.0.tgz#48e1706c690e628148482bfb64acb67472089aaa"
+  integrity sha1-SOFwbGkOYoFISCv7ZKy2dHIImqo=
+
+"@ffmpeg-installer/ffmpeg@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/ffmpeg/download/@ffmpeg-installer/ffmpeg-1.0.20.tgz#d3c9c2bbcd76149468fb0886c2b3fe9e4795490b"
+  integrity sha1-08nCu812FJRo+wiGwrP+nkeVSQs=
+  optionalDependencies:
+    "@ffmpeg-installer/darwin-x64" "4.1.0"
+    "@ffmpeg-installer/linux-arm" "4.1.3"
+    "@ffmpeg-installer/linux-arm64" "4.1.4"
+    "@ffmpeg-installer/linux-ia32" "4.1.0"
+    "@ffmpeg-installer/linux-x64" "4.1.0"
+    "@ffmpeg-installer/win32-ia32" "4.1.0"
+    "@ffmpeg-installer/win32-x64" "4.1.0"
+
+"@ffmpeg-installer/linux-arm64@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/linux-arm64/download/@ffmpeg-installer/linux-arm64-4.1.4.tgz#7219f3f901bb67f7926cb060b56b6974a6cad29f"
+  integrity sha1-chnz+QG7Z/eSbLBgtWtpdKbK0p8=
+
+"@ffmpeg-installer/linux-arm@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/linux-arm/download/@ffmpeg-installer/linux-arm-4.1.3.tgz#c554f105ed5f10475ec25d7bec94926ce18db4c1"
+  integrity sha1-xVTxBe1fEEdewl177JSSbOGNtME=
+
+"@ffmpeg-installer/linux-ia32@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/linux-ia32/download/@ffmpeg-installer/linux-ia32-4.1.0.tgz#adad70b0d0d9d8d813983d6e683c5a338a75e442"
+  integrity sha1-ra1wsNDZ2NgTmD1uaDxaM4p15EI=
+
+"@ffmpeg-installer/linux-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/linux-x64/download/@ffmpeg-installer/linux-x64-4.1.0.tgz#b4a5d89c4e12e6d9306dbcdc573df716ec1c4323"
+  integrity sha1-tKXYnE4S5tkwbbzcVz33FuwcQyM=
+
+"@ffmpeg-installer/win32-ia32@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/win32-ia32/download/@ffmpeg-installer/win32-ia32-4.1.0.tgz#6eac4fb691b64c02e7a116c1e2d167f3e9b40638"
+  integrity sha1-bqxPtpG2TALnoRbB4tFn8+m0Bjg=
+
+"@ffmpeg-installer/win32-x64@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ffmpeg-installer/win32-x64/download/@ffmpeg-installer/win32-x64-4.1.0.tgz#17e8699b5798d4c60e36e2d6326a8ebe5e95a2c5"
+  integrity sha1-F+hpm1eY1MYONuLWMmqOvl6VosU=
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -86,6 +134,11 @@ assert-plus@1.0.0, assert-plus@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/assert-plus/download/assert-plus-1.0.0.tgz#f12e0f3c5d77b0b1cdd9146942e4e96c1e4dd525"
   integrity sha1-8S4PPF13sLHN2RRpQuTpbB5N1SU=
+
+async@>=0.2.9:
+  version "3.2.0"
+  resolved "https://registry.npm.taobao.org/async/download/async-3.2.0.tgz#b3a2685c5ebb641d3de02d161002c60fc9f85720"
+  integrity sha1-s6JoXF67ZB094C0WEALGD8n4VyA=
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -593,6 +646,14 @@ finalhandler@~1.1.2:
     parseurl "~1.3.3"
     statuses "~1.5.0"
     unpipe "~1.0.0"
+
+fluent-ffmpeg@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npm.taobao.org/fluent-ffmpeg/download/fluent-ffmpeg-2.1.2.tgz#c952de2240f812ebda0aa8006d7776ee2acf7d74"
+  integrity sha1-yVLeIkD4EuvaCqgAbXd27irPfXQ=
+  dependencies:
+    async ">=0.2.9"
+    which "^1.1.1"
 
 forever-agent@~0.6.1:
   version "0.6.1"
@@ -1895,7 +1956,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-which@1, which@^1.2.9:
+which@1, which@^1.1.1, which@^1.2.9:
   version "1.3.1"
   resolved "https://registry.npm.taobao.org/which/download/which-1.3.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwhich%2Fdownload%2Fwhich-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
   integrity sha1-pFBD1U9YBTFtqNYvn1CRjT2nCwo=
