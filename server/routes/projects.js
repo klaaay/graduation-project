@@ -136,16 +136,24 @@ router.delete("/:id", auth, async (req, res) => {
     // Make sure user owns project
     if (project.user.toString() !== req.user.id)
       return res.status(401).json({ msg: "用户验证失败" });
-
     const projectId = req.params.id;
     const fileGroupList = await Fgroup.find({ project: projectId });
+    const fileIdList = fileGroupList.reduce((result, current) => {
+      result.push(current.thumb);
+      result.push(current.detail);
+      return result;
+    }, []);
     console.log(fileGroupList);
-
-    // rimraf(project.localPath, function(err) {
-    //   // 删除当前目录下的 aaa
-    //   if (err) console.log(err);
-    // });
-    // await Project.findByIdAndRemove(projectId);
+    console.log(fileIdList);
+    rimraf(project.localPath, function(err) {
+      // 删除当前目录下的 aaa
+      if (err) console.log(err);
+    });
+    await Project.findByIdAndRemove(projectId);
+    await Fgroup.deleteMany({
+      project: projectId
+    });
+    await File.remove({ _id: { $in: fileIdList } });
     res.json({ msg: "项目删除成功" });
   } catch (err) {
     console.log(err);
