@@ -1,6 +1,18 @@
 import wrappedAxios from './wrappedAxios';
 import Cookies from 'js-cookie';
 
+export const signUp = ({ name, email, password }) => {
+  return wrappedAxios({
+    method: 'post',
+    url: `/api/users`,
+    data: {
+      name,
+      email,
+      password
+    }
+  });
+};
+
 export const authLogin = (email, password) => {
   return wrappedAxios({
     method: 'post',

@@ -1,36 +1,40 @@
-import React from 'react';
-import { Form, Input, Button } from 'antd';
+import React, { FC } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
+import { signUp } from '@/service';
+import Cookies from 'js-cookie';
 
 interface IRegistrationForm {}
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 }
+    span: 5
   },
   wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 }
+    span: 16
   }
 };
 const tailFormItemLayout = {
   wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0
-    },
-    sm: {
-      span: 16,
-      offset: 8
-    }
+    span: 4,
+    offset: 18
   }
 };
 
-const RegistrationForm = () => {
+const RegistrationForm: FC<IRegistrationForm & RouteComponentProps> = ({
+  history
+}) => {
   const [form] = Form.useForm();
 
   const onFinish = values => {
-    console.log('Received values of form: ', values);
+    signUp(values).then(res => {
+      const { isError, msg, data } = res;
+      if (!isError) {
+        Cookies.set('token', data);
+        message.success(msg);
+        window.location.reload();
+      }
+    });
   };
 
   return (
@@ -113,4 +117,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default withRouter(RegistrationForm);

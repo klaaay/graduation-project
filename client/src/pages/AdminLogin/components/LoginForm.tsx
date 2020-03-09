@@ -37,7 +37,11 @@ const LoginForm = ({ login }) => {
         />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
+        <Button
+          style={{ float: 'right' }}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button">
           登录
         </Button>
       </Form.Item>

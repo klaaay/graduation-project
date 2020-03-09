@@ -27,12 +27,12 @@ const AdminLogin = ({ history }) => {
   const renderModeBtn = () => {
     const result =
       mode === 'login' ? (
-        <span>
+        <span style={{ float: 'right' }}>
           没有账号
           <a onClick={handleModeChange}>前往注册</a>
         </span>
       ) : (
-        <span>
+        <span style={{ float: 'right', marginRight: '70px' }}>
           已有账号
           <a onClick={handleModeChange}>前往登录</a>
         </span>
