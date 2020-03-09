@@ -9,22 +9,16 @@ const User = require("../models/User");
 
 const auth = require("../middleware/auth");
 
-// @route       GET api/auth
-// @desc        Get logged in user
-// @access      Private
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.json({ data: user });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json("服务器错误");
+    res.status(500).json({ msg: "服务器错误" });
   }
 });
 
-// @route       POST api/auth
-// @desc        Auth user & get token
-// @access      Public
 router.post(
   "/",
   [
@@ -77,7 +71,7 @@ router.post(
       );
     } catch (error) {
       console.error(error.message);
-      res.status(500).json("服务器错误");
+      res.status(500).json({ msg: "服务器错误" });
     }
   }
 );

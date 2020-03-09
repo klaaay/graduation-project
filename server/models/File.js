@@ -5,10 +5,6 @@ const FileSchema = mongoose.Schema({
     type: String,
     require: true
   },
-  type: {
-    type: String,
-    require: true
-  },
   remotePath: {
     type: String,
     require: true
@@ -23,4 +19,4 @@ const FileSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("file", FileSchema);
+module.exports = mongoose.model("files", FileSchema);

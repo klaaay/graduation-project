@@ -60,3 +60,17 @@ export const deleteProject = ({ id }) => {
     url: `/api/projects/${id}`
   });
 };
+
+export const getProjectMedias = ({ id }) => {
+  return wrappedAxios({
+    method: 'get',
+    url: `/api/fgroup/${id}`
+  });
+};
+
+export const deleteProjectMedia = ({ id }) => {
+  return wrappedAxios({
+    method: 'delete',
+    url: `/api/fgroup/${id}`
+  });
+};

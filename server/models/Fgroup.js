@@ -23,4 +23,4 @@ const FgroupSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("fgroup", FgroupSchema);
+module.exports = mongoose.model("fgroups", FgroupSchema);

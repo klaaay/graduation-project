@@ -7,9 +7,6 @@ const { check, validationResult } = require("express-validator");
 
 const User = require("../models/User");
 
-// @route       POST api/users
-// @desc        Register a user
-// @access      Public
 router.post(
   "/",
   [
@@ -61,7 +58,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("服务器错误");
+      res.status(500).send({ msg: "服务器错误" });
     }
   }
 );

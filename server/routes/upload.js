@@ -23,12 +23,11 @@ router.post("/cover", auth, async (req, res) => {
     return res.status(500).send({ msg: "该项目不存在" });
   }
   const file = req.files.file;
-  const { name, size, mimetype } = file;
+  const { name } = file;
   try {
     await file.mv(`${project.localPath}/img/cover.jpg`);
     const newFile = new File({
       name,
-      type: mimetype,
       localPath: `${project.localPath}/img/cover.jpg`,
       remotePath: `${config.get("DOMAIN")}:${config.get("SERVER_PORT")}${
         project.relativePath
@@ -56,7 +55,7 @@ router.post("/pic/:id", async (req, res) => {
     return res.status(400).json({ msg: "No file uploaded" });
   }
   const originalFile = req.files.file;
-  const { name, mimetype } = originalFile;
+  const { name } = originalFile;
   const projectId = req.params.id;
   const project = await Project.findById(projectId);
   const { _id, localPath, relativePath } = project;
@@ -74,7 +73,6 @@ router.post("/pic/:id", async (req, res) => {
 
     const thumbFile = new File({
       name,
-      type: mimetype,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}/img/thumbs/${name}`,
@@ -83,7 +81,6 @@ router.post("/pic/:id", async (req, res) => {
 
     const detailFile = new File({
       name,
-      type: mimetype,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}/img/${name}`,
@@ -119,7 +116,7 @@ router.post("/video/:id", async (req, res) => {
 
   const originalFile = req.files.file;
   const projectId = req.params.id;
-  const { name, size, mimetype } = originalFile;
+  const { name } = originalFile;
   const project = await Project.findById(projectId);
 
   const { _id, localPath, relativePath } = project;
@@ -138,7 +135,6 @@ router.post("/video/:id", async (req, res) => {
       .on("end", async function() {
         const thumbFile = new File({
           name,
-          type: mimetype,
           remotePath: `${config.get("DOMAIN")}:${config.get(
             "SERVER_PORT"
           )}${relativePath}/video/${name.split(".")[0]}.jpg`,
@@ -147,7 +143,6 @@ router.post("/video/:id", async (req, res) => {
 
         const detailFile = new File({
           name,
-          type: mimetype,
           remotePath: `${config.get("DOMAIN")}:${config.get(
             "SERVER_PORT"
           )}${relativePath}/video/${name}`,
@@ -182,7 +177,7 @@ router.post("/pdf/:id", async (req, res) => {
     return res.status(400).json({ msg: "No file uploaded" });
   }
   const originalFile = req.files.file;
-  const { name, mimetype } = originalFile;
+  const { name } = originalFile;
   const projectId = req.params.id;
   const project = await Project.findById(projectId);
   const { _id, localPath, relativePath } = project;
@@ -197,7 +192,6 @@ router.post("/pdf/:id", async (req, res) => {
 
     const thumbFile = new File({
       name,
-      type: mimetype,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}/pdf/${name.split(".")[0]}.jpg`,
@@ -206,7 +200,6 @@ router.post("/pdf/:id", async (req, res) => {
 
     const detailFile = new File({
       name,
-      type: mimetype,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}/pdf/${name}`,

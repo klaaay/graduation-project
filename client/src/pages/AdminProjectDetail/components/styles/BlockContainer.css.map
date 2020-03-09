@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,gBADc,CACd,WAAW,CAAC;EACV,QAAQ,EAAE,QAAQ;CACnB",
+    "sources": [
+        "BlockContainer.scss"
+    ],
+    "names": [],
+    "file": "BlockContainer.css"
+}

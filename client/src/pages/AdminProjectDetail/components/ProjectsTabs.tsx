@@ -1,28 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import UploadModal from './UploadModal';
+import BlockContainer, { IBlockItem } from './BlockContainer';
+import { getProjectMedias } from '@/service';
 const { TabPane } = Tabs;
 
-function callback(key) {
-  console.log(key);
-}
-
 const ProjectsTabs = () => {
+  const [mode, setMode] = useState('pic');
+  const [blockList, setBlockList] = useState<IBlockItem[]>([]);
+
+  function callback(key) {
+    console.log(key);
+    setMode(key);
+  }
+
+  const handleGetProjectMedias = projectId => {
+    getProjectMedias({ id: projectId }).then(res => {
+      const { data, isError, msg } = res;
+      if (!isError) {
+        // message.success(msg);
+        setBlockList(data);
+      }
+    });
+  };
+
   return (
     <div className="project-tabs">
       <Tabs
         defaultActiveKey="pic"
         onChange={callback}
         animated={false}
-        tabBarExtraContent={<UploadModal />}>
+        tabBarExtraContent={
+          <UploadModal
+            mode={mode}
+            handleGetProjectMedias={handleGetProjectMedias}
+          />
+        }>
         <TabPane tab="图片" key="pic">
-          Content of Tab Pane 1
+          <BlockContainer
+            mode={mode}
+            handleGetProjectMedias={handleGetProjectMedias}
+            blockList={blockList}
+          />
         </TabPane>
         <TabPane tab="视频" key="video">
-          Content of Tab Pane 2
+          <BlockContainer
+            mode={mode}
+            handleGetProjectMedias={handleGetProjectMedias}
+            blockList={blockList}
+          />
         </TabPane>
         <TabPane tab="演示文稿" key="pdf">
-          Content of Tab Pane 3
+          <BlockContainer
+            mode={mode}
+            handleGetProjectMedias={handleGetProjectMedias}
+            blockList={blockList}
+          />
         </TabPane>
       </Tabs>
     </div>

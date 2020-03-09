@@ -1,21 +1,9 @@
 import React, { FC } from 'react';
-import { Table, Divider, message } from 'antd';
+import { Table, Divider, message, Popconfirm } from 'antd';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CreateProjectModal from './ProjectModal';
 import { deleteProject } from '@/service';
 import queryString from 'query-string';
-
-// const fakeData = [
-//   {
-//     _id: '5e4caf4cea11e04a38309608',
-//     name: '新型冠状病毒2222',
-//     description: 'wo de test2222',
-//     type: 'life',
-//     user: '5e4bfa4e19aaac416c8acbf4',
-//     date: '2020-02-19T03:45:16.186Z',
-//     __v: 0
-//   }
-// ];
 
 type IProjectTable = {
   projectsData: any;
@@ -39,7 +27,26 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
     });
   };
 
+  function confirm(e, id) {
+    handleDeleteProject(id);
+  }
+
+  function cancel(e) {}
+
   const columns = [
+    {
+      title: '项目封面',
+      dataIndex: 'cover',
+      key: 'cover',
+      width: '15%',
+      render: cover => {
+        return (
+          <img
+            style={{ width: '70px', height: '70px' }}
+            src={cover.remotePath}></img>
+        );
+      }
+    },
     {
       title: '项目名称',
       dataIndex: 'name',
@@ -82,13 +89,16 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
             handleGetProjects={handleGetProjects}
           />
           <Divider type="vertical" />
-          <a
-            style={{ color: '#f50' }}
-            onClick={() => {
-              handleDeleteProject(record._id);
-            }}>
-            删除
-          </a>
+          <Popconfirm
+            title="你确定要删除该项目吗?"
+            onConfirm={e => {
+              confirm(e, record._id);
+            }}
+            onCancel={cancel}
+            okText="确定"
+            cancelText="取消">
+            <a style={{ color: '#f50' }}>删除</a>
+          </Popconfirm>
         </span>
       )
     }
@@ -99,7 +109,6 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
       rowKey={'name'}
       columns={columns}
       dataSource={(projectsData && projectsData.data) || []}
-      // dataSource={fakeData}
     />
   );
 };

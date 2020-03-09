@@ -20,6 +20,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/projects", require("./routes/projects"));
 app.use("/api/info", require("./routes/info"));
 app.use("/api/upload", require("./routes/upload"));
+app.use("/api/fgroup", require("./routes/fgroup"));
 
 app.listen(SERVER_PORT, () => {
   console.log(`app listened on ${SERVER_PORT}`);

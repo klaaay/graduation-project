@@ -36,7 +36,6 @@ classifys.sort().forEach(async (classify, index_classify) => {
       var birthtime = fs.statSync(
         `./data/${classify}/${project}/description.txt`
       ).birthtimeMs;
-      // console.log(time.birthtimeMs)
       var file_items = fs.readdirSync(`./data/${classify}/${project}`);
       var pic = [];
       var video = [];
@@ -69,9 +68,6 @@ classifys.sort().forEach(async (classify, index_classify) => {
             video: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${
               video_item.split(".")[0]
             }.mp4`,
-            // thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${
-            //   video_item.split(".")[0]
-            // }.jpg`,
             thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/video/${video_item}`,
             alt: video_item.split(".")[0]
           }));
@@ -89,10 +85,6 @@ classifys.sort().forEach(async (classify, index_classify) => {
             pdf: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${
               pdf_item.split(".")[0]
             }.pdf`,
-            // thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${
-            //   pdf_item.split(".")[0]
-            // }.jpg`,
-            // pdf: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${pdf_item}`,
             thumb: `${DOMAIN}:${SERVER_PORT}/${INIT_URL}/${classify}/${project}/pdf/${pdf_item}`,
             alt: pdf_item.split(".")[0]
           }));

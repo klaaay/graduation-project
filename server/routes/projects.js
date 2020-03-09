@@ -2,34 +2,28 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
-
 const { check, validationResult } = require("express-validator");
 const auth = require("../middleware/auth");
-
 const Project = require("../models/Project");
-const User = require("../models/User");
 const File = require("../models/File");
 const Fgroup = require("../models/Fgroup");
 const rimraf = require("rimraf");
 
-// @route       POST api/proejcts
-// @desc        Get all users proejcts
-// @access      Private
 router.get("/", auth, async (req, res) => {
   try {
-    const proejcts = await Project.find({ user: req.user.id }).sort({
-      date: -1
-    });
+    const proejcts = await Project.find({ user: req.user.id })
+      .populate("cover")
+      .sort({
+        date: -1
+      });
 
     res.json({ data: proejcts });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ msg: "服务器错误" });
   }
 });
 
-// @route       POST api/proejcts
-// @desc        Add new proejct
-// @access      Private
 router.post(
   "/",
   [
@@ -96,25 +90,41 @@ router.post(
   }
 );
 
-// @route       PUT api/proejcts/:id
-// @desc        Update proejct
-// @access      Private
 router.put("/:id", auth, async (req, res) => {
+  const getTypePath = localPath => {
+    return localPath
+      .split(path.sep)
+      .slice(0, -1)
+      .join(path.sep);
+  };
   const errors = validationResult(req);
   if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
-  const { name, description, type } = req.body;
-  const projectFields = {};
-  if (name) projectFields.name = name;
-  if (description) projectFields.description = description;
-  if (type) projectFields.type = type;
-
   try {
     let project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ msg: "当前项目不存在" });
-    // Make sure user owns contact
+    const { name, description, type } = req.body;
+    const projectFields = {};
+    if (name) {
+      projectFields.name = name;
+      // console.log(getTypePath(project.localPath));
+      // fs.renameSync(
+      //   project.localPath,
+      //   `${getTypePath(project.localPath)}${path.sep}${name}`
+      // );
+    }
+    if (description) {
+      projectFields.description = description;
+      fs.writeFileSync(
+        `${project.localPath}/description.txt`,
+        description,
+        "utf8"
+      );
+    }
+    if (type) projectFields.type = type;
     if (project.user.toString() !== req.user.id)
       return res.status(401).json({ msg: "用户验证失败" });
+
     project = await Project.findByIdAndUpdate(
       req.params.id,
       { $set: projectFields },
@@ -122,18 +132,16 @@ router.put("/:id", auth, async (req, res) => {
     );
     res.json({ data: project, msg: "更新项目成功" });
   } catch (err) {
-    res.status(500).send("服务器错误");
+    console.log(err);
+
+    res.status(500).send({ msg: "服务器错误" });
   }
 });
 
-// @route       PUT api/projects/:id
-// @desc        Delete project
-// @access      Private
 router.delete("/:id", auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ msg: "没有找到该项目" });
-    // Make sure user owns project
     if (project.user.toString() !== req.user.id)
       return res.status(401).json({ msg: "用户验证失败" });
     const projectId = req.params.id;
@@ -143,11 +151,11 @@ router.delete("/:id", auth, async (req, res) => {
       result.push(current.detail);
       return result;
     }, []);
-    console.log(fileGroupList);
-    console.log(fileIdList);
     rimraf(project.localPath, function(err) {
-      // 删除当前目录下的 aaa
-      if (err) console.log(err);
+      if (err) {
+        console.log(err);
+        res.status(500).send({ msg: "服务器错误" });
+      }
     });
     await Project.findByIdAndRemove(projectId);
     await Fgroup.deleteMany({

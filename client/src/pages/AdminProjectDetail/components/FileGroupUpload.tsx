@@ -1,76 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { Upload, message } from 'antd';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { InboxOutlined } from '@ant-design/icons';
+import queryString from 'query-string';
 import './styles/FileGroupUpload.css';
 
 const { Dragger } = Upload;
 
-const acceptMap = {
-  pic: '.jpg',
-  video: '.mp4',
-  pdf: '.pdf,.jpg'
+const modeMap = {
+  pic: {
+    accept: '.jpg,.png,.gif',
+    text: `图片(.jpg, .png, .gif)`
+  },
+  video: {
+    accept: '.mp4',
+    text: `视频(.mp4)`
+  },
+  pdf: {
+    accept: '.pdf',
+    text: `演示文稿(.pdf)`
+  }
 };
 
-const FileGroupUpload = ({ mode }) => {
+type IFileGroupUploadProps = {
+  uploadMode: string;
+  handleGetProjectMedias: any;
+};
+
+const FileGroupUpload: FC<IFileGroupUploadProps & RouteComponentProps> = ({
+  uploadMode,
+  location,
+  handleGetProjectMedias
+}) => {
   const [fileList, setFileList] = useState([]);
 
+  const { projectId } = queryString.parse(location.search);
+
   const props = {
-    accept: acceptMap[mode],
+    accept: modeMap[uploadMode]['accept'],
     name: 'file',
     multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    // fileList: fileList,
+    action: `http://localhost:3030/api/upload/${uploadMode}/${projectId}`,
     beforeUpload: (file, fileList) => {
-      if (mode === 'pic') {
-        if (fileList.some(item => item.type !== 'image/jpeg')) {
-          message.warning('请上传格式为jpg的图片');
-          return false;
-        } else {
-          return true;
-        }
-      } else if (mode === 'video') {
-        console.log(fileList.filter(item => item.type === 'image/jpeg'));
-        console.log(fileList.filter(item => item.type === 'video/mp4'));
-        if (
-          fileList.filter(item => item.type === 'image/jpeg').length !==
-          fileList.filter(item => item.type === 'video/mp4').length
-        ) {
-          message.warning('请上传匹配视频和视频封面');
-          return false;
-        } else {
-          setFileList([
-            {
-              uid: '1',
-              name: 'xxx.png',
-              status: 'done',
-              response: 'Server Error 500', // custom error message to show
-              url: 'http://www.baidu.com/xxx.png'
-            }
-          ]);
-          return true;
-        }
+      if (uploadMode === 'pic') {
+      } else if (uploadMode === 'video') {
       }
       return true;
     },
     onChange(info) {
       const { status } = info.file;
-      console.log(status);
-      // setFileList([
-      //   {
-      //     uid: '1',
-      //     name: 'xxx.png',
-      //     status: 'uploading',
-      //     response: 'Server Error 500', // custom error message to show
-      //     url: 'http://www.baidu.com/xxx.png'
-      //   }
-      // ]);
       if (status !== 'uploading') {
-        // console.log(info.file, info.fileList);
       }
       if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
+        message.success(`${info.file.name} 上传成功.`);
+        handleGetProjectMedias(projectId);
       } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
+        message.error(`${info.file.name} 上传失败.`);
       }
     }
   };
@@ -82,15 +67,16 @@ const FileGroupUpload = ({ mode }) => {
           <InboxOutlined />
         </p>
         <p className="ant-upload-text">
-          Click or drag file to this area to upload
+          点击或者拖拽该区域上传
+          <span style={{ color: '#40A9FF' }}>
+            {modeMap[uploadMode]['text']}
+          </span>
+          文件
         </p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading
-          company data or other band files
-        </p>
+        <p className="ant-upload-hint">支持单个或者多个文件</p>
       </Dragger>
     </div>
   );
 };
 
-export default FileGroupUpload;
+export default withRouter(FileGroupUpload);

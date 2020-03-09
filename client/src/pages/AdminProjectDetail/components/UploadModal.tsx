@@ -1,10 +1,14 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import { Modal, Button, Radio } from 'antd';
 import FileGroupUpload from './FileGroupUpload';
 
-const UploadModal = () => {
+const UploadModal = ({ mode, handleGetProjectMedias }) => {
   const [visible, setVisible] = useState(false);
-  const [mode, setMode] = useState('pic');
+  const [uploadMode, setUploadMode] = useState(mode);
+
+  useEffect(() => {
+    setUploadMode(mode);
+  }, [mode]);
 
   const showModal = () => {
     setVisible(true);
@@ -27,16 +31,19 @@ const UploadModal = () => {
         onOk={handleCancel}
         onCancel={handleCancel}>
         <Radio.Group
-          value={mode}
+          value={uploadMode}
           buttonStyle="solid"
           onChange={e => {
-            setMode(e.target.value);
+            setUploadMode(e.target.value);
           }}>
           <Radio.Button value="pic">图片</Radio.Button>
           <Radio.Button value="video">视频</Radio.Button>
           <Radio.Button value="pdf">演示文稿</Radio.Button>
         </Radio.Group>
-        <FileGroupUpload mode={mode} />
+        <FileGroupUpload
+          uploadMode={uploadMode}
+          handleGetProjectMedias={handleGetProjectMedias}
+        />
       </Modal>
     </div>
   );

@@ -102,7 +102,7 @@ const ProjectForm: FC<IProjectForm> = ({
         label="类别"
         name="type"
         rules={[{ required: true, message: '请选择类别' }]}>
-        <Select style={{ width: '100%' }}>
+        <Select style={{ width: '100%' }} disabled={modalMode === 'edit'}>
           {typeList.map(({ index, text }) => {
             return (
               <Option key={text} value={`${index}${text}`}>
@@ -116,7 +116,7 @@ const ProjectForm: FC<IProjectForm> = ({
         label="项目名称"
         name="name"
         rules={[{ required: true, message: '请输入项目名称' }]}>
-        <Input />
+        <Input disabled={modalMode === 'edit'} />
       </Form.Item>
       <Form.Item
         label="项目描述"
