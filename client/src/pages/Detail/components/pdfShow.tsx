@@ -41,7 +41,7 @@ const PdfShow: FC<IPdfShow> = ({ pdf }) => {
             float: 'right',
             transform: 'translate(-20px, -42px)',
             backgroundColor: 'white',
-            opacity: '0.4'
+            opacity: isFullscreen ? 0 : 0.4
           }}
           onClick={toggleFull}>
           <Tooltip title="全屏">
