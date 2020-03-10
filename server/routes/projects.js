@@ -34,14 +34,7 @@ router.post(
         .isEmpty(),
       check("description", "请输入项目描述")
         .not()
-        .isEmpty(),
-      check("type", "请选择项目所属的类别").isIn([
-        "0文学",
-        "1社会",
-        "2编程",
-        "3生物",
-        "4其他"
-      ])
+        .isEmpty()
     ]
   ],
   async (req, res) => {
@@ -140,7 +133,7 @@ router.put("/:id", auth, async (req, res) => {
 
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id);
+    const project = await Project.findById(req.params.id).populate("cover");
     if (!project) return res.status(404).json({ msg: "没有找到该项目" });
     if (project.user.toString() !== req.user.id)
       return res.status(401).json({ msg: "用户验证失败" });
@@ -151,6 +144,12 @@ router.delete("/:id", auth, async (req, res) => {
       result.push(current.detail);
       return result;
     }, []);
+    rimraf(project.cover.localPath, function(err) {
+      if (err) {
+        console.log(err);
+        res.status(500).send({ msg: "服务器错误" });
+      }
+    });
     rimraf(project.localPath, function(err) {
       if (err) {
         console.log(err);
@@ -158,6 +157,7 @@ router.delete("/:id", auth, async (req, res) => {
       }
     });
     await Project.findByIdAndRemove(projectId);
+    await File.findByIdAndRemove(project.cover._id);
     await Fgroup.deleteMany({
       project: projectId
     });

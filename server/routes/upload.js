@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
+const path = require("path");
 const config = require("config");
 const File = require("../models/File");
 const Fgroup = require("../models/Fgroup");
@@ -25,13 +26,13 @@ router.post("/cover", auth, async (req, res) => {
   const file = req.files.file;
   const { name } = file;
   try {
-    await file.mv(`${project.localPath}/img/cover.jpg`);
+    await file.mv(`${project.localPath}${path.sep}img${path.sep}cover.jpg`);
     const newFile = new File({
       name,
-      localPath: `${project.localPath}/img/cover.jpg`,
+      localPath: `${project.localPath}${path.sep}img${path.sep}cover.jpg`,
       remotePath: `${config.get("DOMAIN")}:${config.get("SERVER_PORT")}${
         project.relativePath
-      }/img/cover.jpg`
+      }${path.sep}img${path.sep}cover.jpg`
     });
     const coverFile = await newFile.save();
     await Project.findByIdAndUpdate(
@@ -61,13 +62,13 @@ router.post("/pic/:id", async (req, res) => {
   const { _id, localPath, relativePath } = project;
 
   try {
-    await originalFile.mv(`${localPath}/img/${name}`);
-    if (!fs.existsSync(`${localPath}/img/thumbs`)) {
-      fs.mkdirSync(`${localPath}/img/thumbs`);
+    await originalFile.mv(`${localPath}${path.sep}img${path.sep}${name}`);
+    if (!fs.existsSync(`${localPath}${path.sep}img${path.sep}thumbs`)) {
+      fs.mkdirSync(`${localPath}${path.sep}img${path.sep}thumbs`);
     }
-    images(`${localPath}/img/${name}`)
+    images(`${localPath}${path.sep}img${path.sep}${name}`)
       .size(65)
-      .save(`${localPath}/img/thumbs/${name}`, {
+      .save(`${localPath}${path.sep}img${path.sep}thumbs${path.sep}${name}`, {
         quality: 60
       });
 
@@ -75,16 +76,16 @@ router.post("/pic/:id", async (req, res) => {
       name,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
-      )}${relativePath}/img/thumbs/${name}`,
-      localPath: `${localPath}/img/thumbs/${name}`
+      )}${relativePath}${path.sep}img${path.sep}thumbs${path.sep}${name}`,
+      localPath: `${localPath}${path.sep}img${path.sep}thumbs${path.sep}${name}`
     });
 
     const detailFile = new File({
       name,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
-      )}${relativePath}/img/${name}`,
-      localPath: `${localPath}/img/${name}`
+      )}${relativePath}${path.sep}img${path.sep}${name}`,
+      localPath: `${localPath}${path.sep}img${path.sep}${name}`
     });
 
     const newThumbFile = await thumbFile.save();
@@ -122,14 +123,14 @@ router.post("/video/:id", async (req, res) => {
   const { _id, localPath, relativePath } = project;
 
   try {
-    await originalFile.mv(`${localPath}/video/${name}`);
+    await originalFile.mv(`${localPath}${path.sep}video${path.sep}${name}`);
 
-    new ffmpeg(`${localPath}/video/${name}`)
+    new ffmpeg(`${localPath}${path.sep}video${path.sep}${name}`)
       .screenshots({
         timemarks: ["0.5"],
         count: 1,
         filename: `${name.split(".")[0]}.jpg`,
-        folder: `${localPath}/video`,
+        folder: `${localPath}${path.sep}video`,
         size: "500x500"
       })
       .on("end", async function() {
@@ -137,16 +138,20 @@ router.post("/video/:id", async (req, res) => {
           name,
           remotePath: `${config.get("DOMAIN")}:${config.get(
             "SERVER_PORT"
-          )}${relativePath}/video/${name.split(".")[0]}.jpg`,
-          localPath: `${localPath}/video/${name.split(".")[0]}.jpg`
+          )}${relativePath}${path.sep}video${path.sep}${
+            name.split(".")[0]
+          }.jpg`,
+          localPath: `${localPath}${path.sep}video${path.sep}${
+            name.split(".")[0]
+          }.jpg`
         });
 
         const detailFile = new File({
           name,
           remotePath: `${config.get("DOMAIN")}:${config.get(
             "SERVER_PORT"
-          )}${relativePath}/video/${name}`,
-          localPath: `${localPath}/video/${name}`
+          )}${relativePath}${path.sep}video${path.sep}${name}`,
+          localPath: `${localPath}${path.sep}video${path.sep}${name}`
         });
 
         const newThumbFile = await thumbFile.save();
@@ -183,9 +188,11 @@ router.post("/pdf/:id", async (req, res) => {
   const { _id, localPath, relativePath } = project;
 
   try {
-    await originalFile.mv(`${localPath}/pdf/${name}`);
+    await originalFile.mv(`${localPath}${path.sep}pdf${path.sep}${name}`);
     const { stdout, stderr } = await exec(
-      `magick convert "${localPath}/pdf/${name}[0]" "${localPath}/pdf/${
+      `magick convert "${localPath}${path.sep}pdf${
+        path.sep
+      }${name}[0]" "${localPath}${path.sep}pdf${path.sep}${
         name.split(".")[0]
       }.jpg"`
     );
@@ -194,16 +201,18 @@ router.post("/pdf/:id", async (req, res) => {
       name,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
-      )}${relativePath}/pdf/${name.split(".")[0]}.jpg`,
-      localPath: `${localPath}/pdf/${name.split(".")[0]}.jpg`
+      )}${relativePath}${path.sep}pdf${path.sep}${name.split(".")[0]}.jpg`,
+      localPath: `${localPath}${path.sep}pdf${path.sep}${
+        name.split(".")[0]
+      }.jpg`
     });
 
     const detailFile = new File({
       name,
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
-      )}${relativePath}/pdf/${name}`,
-      localPath: `${localPath}/pdf/${name}`
+      )}${relativePath}${path.sep}pdf${path.sep}${name}`,
+      localPath: `${localPath}${path.sep}pdf${path.sep}${name}`
     });
 
     const newThumbFile = await thumbFile.save();
