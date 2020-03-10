@@ -23,6 +23,12 @@ main {
   max-height: calc(100vh - 220px) !important;
 }
 
+.j-gallery-thumbnail {
+  img {
+    width: 100%;
+  }
+}
+
 .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected,
 .ant-menu.ant-menu-dark .ant-menu-item-selected {
   background-color: #189183 !important;

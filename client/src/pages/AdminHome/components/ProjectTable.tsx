@@ -38,7 +38,7 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
       title: '项目封面',
       dataIndex: 'cover',
       key: 'cover',
-      width: '15%',
+      width: '10%',
       render: cover => {
         return (
           <img
@@ -50,6 +50,7 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
     {
       title: '项目名称',
       dataIndex: 'name',
+      width: '15%',
       key: 'name',
       render: (text, record) => {
         return (
@@ -71,6 +72,7 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
       title: '类别',
       dataIndex: 'type',
       key: 'type',
+      width: '5%',
       render: text => text.slice(1)
     },
     {
@@ -81,6 +83,7 @@ const ProjectTable: FC<IProjectTable & RouteComponentProps> = ({
     {
       title: '操作',
       key: 'action',
+      width: '15%',
       render: (text, record) => (
         <span style={{ display: 'flex' }}>
           <CreateProjectModal
