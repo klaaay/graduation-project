@@ -51,7 +51,7 @@ const AdminLogin = ({ history }) => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2018 Created by Ant UED
+          Media ©2020 Created by klay
         </Footer>
       </Layout>
     </div>
