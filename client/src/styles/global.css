@@ -23,6 +23,11 @@ main {
   max-height: calc(100vh - 220px) !important;
 }
 
+.image-gallery-thumbnail-image {
+  width: 80px !important;
+  height: 80px !important;
+}
+
 .j-gallery-thumbnail img {
   width: 100%;
 }

@@ -8,5 +8,6 @@
 
 #admin-project-detail .main-content {
   padding-top: 15px;
+  overflow: auto;
 }
 /*# sourceMappingURL=index.css.map */

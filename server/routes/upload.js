@@ -32,15 +32,15 @@ router.post("/cover", auth, async (req, res) => {
       localPath: `${project.localPath}${path.sep}img${path.sep}cover.jpg`,
       remotePath: `${config.get("DOMAIN")}:${config.get("SERVER_PORT")}${
         project.relativePath
-      }${path.sep}img${path.sep}cover.jpg`
+      }${path.sep}img${path.sep}cover.jpg`,
     });
     const coverFile = await newFile.save();
     await Project.findByIdAndUpdate(
       projectId,
       {
         $set: {
-          cover: coverFile._id
-        }
+          cover: coverFile._id,
+        },
       },
       { new: true }
     );
@@ -69,7 +69,7 @@ router.post("/pic/:id", async (req, res) => {
     images(`${localPath}${path.sep}img${path.sep}${name}`)
       .size(65)
       .save(`${localPath}${path.sep}img${path.sep}thumbs${path.sep}${name}`, {
-        quality: 60
+        quality: 60,
       });
 
     const thumbFile = new File({
@@ -77,7 +77,7 @@ router.post("/pic/:id", async (req, res) => {
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}${path.sep}img${path.sep}thumbs${path.sep}${name}`,
-      localPath: `${localPath}${path.sep}img${path.sep}thumbs${path.sep}${name}`
+      localPath: `${localPath}${path.sep}img${path.sep}thumbs${path.sep}${name}`,
     });
 
     const detailFile = new File({
@@ -85,7 +85,7 @@ router.post("/pic/:id", async (req, res) => {
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}${path.sep}img${path.sep}${name}`,
-      localPath: `${localPath}${path.sep}img${path.sep}${name}`
+      localPath: `${localPath}${path.sep}img${path.sep}${name}`,
     });
 
     const newThumbFile = await thumbFile.save();
@@ -95,14 +95,14 @@ router.post("/pic/:id", async (req, res) => {
       project: projectId,
       thumb: newThumbFile._id,
       detail: newDetailFile._id,
-      type: "pic"
+      type: "pic",
     });
 
     const newFgroup = await fGroup.save();
 
     res.json({
       data: newFgroup,
-      msg: "图片上传成功"
+      msg: "图片上传成功",
     });
   } catch (error) {
     console.log(error);
@@ -131,9 +131,9 @@ router.post("/video/:id", async (req, res) => {
         count: 1,
         filename: `${name.split(".")[0]}.jpg`,
         folder: `${localPath}${path.sep}video`,
-        size: "500x500"
+        size: "500x500",
       })
-      .on("end", async function() {
+      .on("end", async function () {
         const thumbFile = new File({
           name,
           remotePath: `${config.get("DOMAIN")}:${config.get(
@@ -143,7 +143,7 @@ router.post("/video/:id", async (req, res) => {
           }.jpg`,
           localPath: `${localPath}${path.sep}video${path.sep}${
             name.split(".")[0]
-          }.jpg`
+          }.jpg`,
         });
 
         const detailFile = new File({
@@ -151,7 +151,7 @@ router.post("/video/:id", async (req, res) => {
           remotePath: `${config.get("DOMAIN")}:${config.get(
             "SERVER_PORT"
           )}${relativePath}${path.sep}video${path.sep}${name}`,
-          localPath: `${localPath}${path.sep}video${path.sep}${name}`
+          localPath: `${localPath}${path.sep}video${path.sep}${name}`,
         });
 
         const newThumbFile = await thumbFile.save();
@@ -161,14 +161,14 @@ router.post("/video/:id", async (req, res) => {
           project: projectId,
           thumb: newThumbFile._id,
           detail: newDetailFile._id,
-          type: "video"
+          type: "video",
         });
 
         const newFgroup = await fGroup.save();
 
         res.json({
           data: newFgroup,
-          msg: "视频上传成功"
+          msg: "视频上传成功",
         });
       });
   } catch (error) {
@@ -204,7 +204,7 @@ router.post("/pdf/:id", async (req, res) => {
       )}${relativePath}${path.sep}pdf${path.sep}${name.split(".")[0]}.jpg`,
       localPath: `${localPath}${path.sep}pdf${path.sep}${
         name.split(".")[0]
-      }.jpg`
+      }.jpg`,
     });
 
     const detailFile = new File({
@@ -212,7 +212,7 @@ router.post("/pdf/:id", async (req, res) => {
       remotePath: `${config.get("DOMAIN")}:${config.get(
         "SERVER_PORT"
       )}${relativePath}${path.sep}pdf${path.sep}${name}`,
-      localPath: `${localPath}${path.sep}pdf${path.sep}${name}`
+      localPath: `${localPath}${path.sep}pdf${path.sep}${name}`,
     });
 
     const newThumbFile = await thumbFile.save();
@@ -222,14 +222,14 @@ router.post("/pdf/:id", async (req, res) => {
       project: projectId,
       thumb: newThumbFile._id,
       detail: newDetailFile._id,
-      type: "pdf"
+      type: "pdf",
     });
 
     const newFgroup = await fGroup.save();
 
     res.json({
       data: newFgroup,
-      msg: "演示文稿上传成功"
+      msg: "演示文稿上传成功",
     });
   } catch (error) {
     console.log(error);
